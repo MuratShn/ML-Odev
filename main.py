@@ -14,6 +14,7 @@ print(df.info())
 df.drop(["permalink","hqstate","name","hqcity","industry"],axis=1,inplace=True)
 print(df.columns)
       
+      
 prf = float((df["prftchange"].sum()) / len(df["prftchange"]))
 prof = float((df["profits"].sum()) / len(df["profits"]))
 rev = float((df["revchange"].sum()) / len(df["revchange"]))
@@ -39,20 +40,33 @@ df["ceowoman"] = le.fit_transform(df["ceowoman"])
 df["jobgrowth"] = le.fit_transform(df["jobgrowth"])
 df["sector"] = le.fit_transform(df["sector"]) 
 
-X = df.drop(["assets"],axis=1)
-Y= df["assets"]
 
-"""y = df.iloc[:,7].values
-df.drop(["assets"],axis=1,inplace=True)
-x = df.iloc[:,:12].values
+print(df.info)
 
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.33,random_state=0)
-"""
+print(df.columns)
+df["year"]=df["year"].astype(int)
+df["rank"]=df["rank"].astype(int)
+df["sector"]=df["sector"].astype(int)
+df["revenues"]=df["revenues"].astype(int)
+df["revchange"]=df["revchange"].astype(int)
+df["profits"]=df["profits"].astype(int)
+df["prftchange"]=df["prftchange"].astype(int)
 
-logreg = LogisticRegression()
-logreg.fit(X, Y)
-y_pred = logreg.predict(X)
+df["assests"]=df["assets"].astype(int)
+df["employees"]=df["employees"].astype(int)
+df["newcomer"]=df["newcomer"].astype(int)
+df["profitable"]=df["profitable"].astype(int)
+df["ceowoman"]=df["ceowoman"].astype(int)
+df["jobgrowth"]=df["jobgrowth"].astype(int)
 
+X = df.drop(["assets"],axis=1).values
+Y= df["assets"].values
 
+print(df.columns)
 
+from sklearn.tree import DecisionTreeRegressor
+r_dt = DecisionTreeRegressor(random_state=0)
+r_dt.fit(X,Y)
+print("-------------------------")
+
+print(r_dt.predict([[2019,1,4,514405,27,3,5845,81000,1,1,1,1,1]]))
